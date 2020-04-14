@@ -1,0 +1,46 @@
+# Hackintosh HP 8200
+
+
+This repo contains the EFI of my working Hackintosh on MacOS High Sierra 10.13.1
+
+
+## Specs
+
+BIOS: 02.29
+CPU: Intel Core i5-2400
+GPU: Nvidia GT-710
+DISPLAY: 1920x1080
+WIFI: TP-Link Wireless USB adapter
+RAM: 12gb
+
+## Requirements
+
+8gb Usb (12gb recommended, 3.0 or 2.0 no issue just use 2.0 port)
+Access to another Mac to download High Sierra
+Clover Configurator (https://mackie100projects.altervista.org/download-clover-configurator/)
+
+## Installation:
+
+Use my EFI folder or manual install by using the following steps
+
+1. Update Bios to 02.29 if not already updated
+2. Download macOS High Sierra from the App Store (Requires another Mac)
+3. Open Disk Ulitity, select usb and Erase as macOS Extended (Journaled) and GUID
+4. Create bootable usb by opening terminal and using the command 
+"sudo /Applications/Install\ macOS\ High\ Sierra.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume"
+5. Mount EFI partition using Clover Configurator
+6. Go to SMBIOS section and click drop down arrow on bottom right and select iMac 14,2
+7. Check Serial is not in use with https://checkcoverage.apple.com/
+8. Go to Kernel and Kext Patches section and check Apple RTC, AppleIntelCPUPM, KernelPm
+9. Under KextsToPatch add Name as AppleAHCIPort, Find as 45787465 726E616C, Replace as 496E7465 726E616C
+10. Go to Devices section and under IntelGFX add 0x12345678
+11. Go to Boot section and add boot argument dart=0
+12. Install Clover Bootloader and select Install UEFI, Install in the ESP, Check Recommended drivers
+13. Go to EFI folder, kexts and other and add atherosE2200Ethernet (If using ethernet), FakeSMC and NullCPUPowerManagement
+14. Insert USB into computer and press F12 when booting, in clover bootloader select the drive "Install macos high sierra"
+15. After installation check everything is working, if so you're successful!
+
+### Notices 
+- You have to generate your own SMBIOS/SerialNumber and SMBIOS/BoardSerialNumber
+- Use nv_disable=1 if you do not have a Nvidia card and want to use integrated graphics
+- Configure your correct screen resolution in config.plist so clover bootloader displays properly
